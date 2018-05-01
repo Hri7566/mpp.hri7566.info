@@ -1185,12 +1185,7 @@ Rect.prototype.contains = function(x, y) {
 ////////////////////////////////////////////////////////////////
 
 	var channel_id = decodeURIComponent(window.location.hash.substr(1)) || "lobby";
-	//if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
-	//if(channel_id.startsWith("piano")) channel_id = channel_id.substr(6);
-	//if(channel_id == "") channel_id = "lobby";
-
-	var wssport = window.location.hostname == "www.multiplayerpiano.com" ? 443 : 8080;
-	var gClient = new Client("ws://" + window.location.hostname + ":" + wssport);
+	var gClient = new Client("ws://23.95.115.204:8080");
 	gClient.setChannel(channel_id);
 	gClient.start();
 
