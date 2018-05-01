@@ -960,6 +960,7 @@ Color.addToMap("#DBD7D2", "Timberwolf");
 Color.addToMap("#EEE600", "Titanium yellow");
 Color.addToMap("#FF6347", "Tomato");
 Color.addToMap("#746CC0", "Toolbox");
+Color.addToMap("#42B72A", "Toothpaste advert green");
 Color.addToMap("#FFC87C", "Topaz");
 Color.addToMap("#FD0E35", "Tractor red");
 Color.addToMap("#00755E", "Tropical rain forest");

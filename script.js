@@ -29,7 +29,7 @@ $(function() {
 
 
 
-	var gSoundPath = "/piano/mp3/";
+	var gSoundPath = "mp3/";
 	var gSoundExt = ".wav.mp3";
 	
 	// Yoshify.
@@ -365,7 +365,7 @@ Rect.prototype.contains = function(x, y) {
 
 	AudioEngineWeb = function() {
 		this.threshold = 10;
-		this.worker = new Worker("/piano/workerTimer.js"); //must be same origin
+		this.worker = new Worker("workerTimer.js"); //must be same origin
 		var self = this;
 		this.worker.onmessage = function(event)
 			{
@@ -1184,12 +1184,12 @@ Rect.prototype.contains = function(x, y) {
 
 ////////////////////////////////////////////////////////////////
 
-	var channel_id = decodeURIComponent(window.location.pathname);
-	if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
-	if(channel_id.startsWith("piano")) channel_id = channel_id.substr(6);
-	if(channel_id == "") channel_id = "lobby";
+	var channel_id = decodeURIComponent(window.location.hash.substr(1)) || "lobby";
+	//if(channel_id.substr(0, 1) == "/") channel_id = channel_id.substr(1);
+	//if(channel_id.startsWith("piano")) channel_id = channel_id.substr(6);
+	//if(channel_id == "") channel_id = "lobby";
 
-	var wssport = window.location.hostname == "www.multiplayerpiano.com" ? 443 : 1234;
+	var wssport = window.location.hostname == "www.multiplayerpiano.com" ? 443 : 8080;
 	var gClient = new Client("ws://" + window.location.hostname + ":" + wssport);
 	gClient.setChannel(channel_id);
 	gClient.start();
@@ -2298,13 +2298,14 @@ Rect.prototype.contains = function(x, y) {
 		if(name == "") name = "lobby";
 		if(gClient.channel && gClient.channel._id === name) return;
 		if(push) {
-			var url = "/piano/" + encodeURIComponent(name).replace("'", "%27");
+			/*var url = "" + encodeURIComponent(name).replace("'", "%27");
 			if(window.history && history.pushState) {
 				history.pushState({"depth": gHistoryDepth += 1, "name": name}, "Piano > " + name, url);
 			} else {
 				window.location = url;
 				return;
-			}
+			}*/
+			window.location.hash = encodeURIComponent(name);
 		}
 		
 		gClient.setChannel(name, settings);
