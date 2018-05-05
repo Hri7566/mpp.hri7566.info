@@ -2979,5 +2979,12 @@ Rect.prototype.contains = function(x, y) {
 			});
 		}
 	})();
-
+	
+	var onClick = function(evt) {
+		document.removeEventListener("click", onClick);
+		MPP.piano.audio.context.resume();
+	}
+	document.addEventListener("click", onClick);
+	
 });
+
