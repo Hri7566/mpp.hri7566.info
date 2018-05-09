@@ -656,14 +656,14 @@ Rect.prototype.contains = function(x, y) {
 		$(window).mouseup(function(event) {
 			mouse_down = false;
 		});
-		/*$(piano.rootElement).mouseover(function(event) {
+		$(piano.rootElement).mouseover(function(event) {
 			if(!mouse_down) return;
 			var ele = event.target;
 			if($(ele).hasClass("key") && piano.keys.hasOwnProperty(ele.note)) {
 				var key = piano.keys[ele.note];
 				press(key.note);
 			}
-		});*/
+		});
 
 		Renderer.prototype.init.call(this, piano);
 		return this;
