@@ -1127,7 +1127,7 @@ Rect.prototype.contains = function(x, y) {
 
 
 
-	var gSustain = true;
+	var gSustain = false;
 
 	var gHeldNotes = {};
 	var gSustainedNotes = {};
