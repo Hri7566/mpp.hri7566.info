@@ -594,8 +594,8 @@ Rect.prototype.contains = function(x, y) {
 		if(typeof width == "undefined") width = $(this.piano.rootElement).width();
 		if(typeof height == "undefined") height = Math.floor(width * 0.2);
 		$(this.piano.rootElement).css({"height": height + "px", marginTop: Math.floor($(window).height() / 2 - height / 2) + "px"});
-		this.width = width;
-		this.height = height;
+		this.width = width * devicePixelRatio;
+		this.height = height * devicePixelRatio;
 	};
 
 	Renderer.prototype.visualize = function(key, color) {
@@ -766,6 +766,8 @@ Rect.prototype.contains = function(x, y) {
 		if(this.height < this.width * 0.2) this.height = Math.floor(this.width * 0.2);
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
+		this.canvas.style.width = this.width / devicePixelRatio + "px";
+		this.canvas.style.height = this.height / devicePixelRatio + "px";
 		
 		// calculate key sizes
 		this.whiteKeyWidth = Math.floor(this.width / 52);
@@ -989,8 +991,8 @@ Rect.prototype.contains = function(x, y) {
 			offy += element.offsetTop;
 		} while(element = element.offsetParent);
 		return {
-			x: evt.pageX - offx,
-			y: evt.pageY - offy
+			x: (evt.pageX - offx) * devicePixelRatio,
+			y: (evt.pageY - offy) * devicePixelRatio
 		}
 	};
 
@@ -2903,6 +2905,8 @@ Rect.prototype.contains = function(x, y) {
 			mixin(knob, {width: 32, height: 32, className: "knob"});
 			html.appendChild(knob);
 			knob = new Knob(knob, 0, 100, 0.1, 50, "mix", "%");
+			knob.canvas.style.width = "32px";
+			knob.canvas.style.height = "32px";
 			knob.on("change", function(k) {
 				var mix = k.value / 100;
 				audio.pianoGain.gain.value = 1 - mix;
@@ -2925,9 +2929,11 @@ Rect.prototype.contains = function(x, y) {
 
 			// osc1 attack
 			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32, height: 32, className: "knob"});
+			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
 			html.appendChild(knob);
 			knob = new Knob(knob, 0, 1, 0.001, osc1_attack, "osc1 attack", "s");
+			knob.canvas.style.width = "32px";
+			knob.canvas.style.height = "32px";
 			knob.on("change", function(k) {
 				osc1_attack = k.value;
 			});
@@ -2935,18 +2941,22 @@ Rect.prototype.contains = function(x, y) {
 
 			// osc1 decay
 			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32, height: 32, className: "knob"});
+			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
 			html.appendChild(knob);
 			knob = new Knob(knob, 0, 2, 0.001, osc1_decay, "osc1 decay", "s");
+			knob.canvas.style.width = "32px";
+			knob.canvas.style.height = "32px";
 			knob.on("change", function(k) {
 				osc1_decay = k.value;
 			});
 			knob.emit("change", knob);
 
 			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32, height: 32, className: "knob"});
+			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
 			html.appendChild(knob);
 			knob = new Knob(knob, 0, 1, 0.001, osc1_sustain, "osc1 sustain", "x");
+			knob.canvas.style.width = "32px";
+			knob.canvas.style.height = "32px";
 			knob.on("change", function(k) {
 				osc1_sustain = k.value;
 			});
@@ -2954,9 +2964,11 @@ Rect.prototype.contains = function(x, y) {
 
 			// osc1 release
 			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32, height: 32, className: "knob"});
+			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
 			html.appendChild(knob);
 			knob = new Knob(knob, 0, 2, 0.001, osc1_release, "osc1 release", "s");
+			knob.canvas.style.width = "32px";
+			knob.canvas.style.height = "32px";
 			knob.on("change", function(k) {
 				osc1_release = k.value;
 			});
