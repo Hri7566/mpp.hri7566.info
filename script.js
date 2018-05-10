@@ -2902,7 +2902,7 @@ Rect.prototype.contains = function(x, y) {
 
 			// mix
 			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32, height: 32, className: "knob"});
+			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
 			html.appendChild(knob);
 			knob = new Knob(knob, 0, 100, 0.1, 50, "mix", "%");
 			knob.canvas.style.width = "32px";
