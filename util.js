@@ -225,7 +225,7 @@ Knob.prototype.contains = function(x, y) {
 Knob.prototype.translateMouseEvent = function(evt) {
 	var element = evt.target;
 	return {
-		x: evt.clientX - element.getBoundingClientRect().left - element.clientLeft + element.scrollLeft,
-		y: evt.clientY - element.getBoundingClientRect().top - element.clientTop + element.scrollTop
+		x: (evt.clientX - element.getBoundingClientRect().left - element.clientLeft + element.scrollLeft) * devicePixelRatio,
+		y: (evt.clientY - element.getBoundingClientRect().top - element.clientTop + element.scrollTop) * devicePixelRatio
 	}
 };
