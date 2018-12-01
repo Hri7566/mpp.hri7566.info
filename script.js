@@ -2753,11 +2753,15 @@ Rect.prototype.contains = function(x, y) {
 
 	// API
 	window.MPP = {
-		press: press,
-		release: release,
+		get press() { return press },
+		set press(func) { press = func },
+		get release() { return release },
+		set release(func) { release = func },
 		piano: gPiano,
 		client: gClient,
-		chat: chat
+		chat: chat,
+		noteQuota: gNoteQuota,
+		soundSelector: gSoundSelector
 	};
 
 	// record mp3
