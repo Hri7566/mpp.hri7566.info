@@ -28,7 +28,7 @@ $(function() {
 
 
 
-
+/*
 	var gSoundPath = "mp3/";
 	var gSoundExt = ".wav.mp3";
 	
@@ -68,7 +68,7 @@ $(function() {
 		gSoundPath = "https://dl.dropboxusercontent.com/u/70730519/Klaver/";
 		gSoundExt = ".wav";
 	}
-
+*/
 	
 
 
@@ -1209,7 +1209,7 @@ Rect.prototype.contains = function(x, y) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext || undefined;
 		var audio_engine = AudioEngineWeb;
 
-		this.audio = new audio_engine().init(function() {
+		this.audio = new audio_engine().init(/*function() {
 			for(var i in piano.keys) {
 				if(!piano.keys.hasOwnProperty(i)) continue;
 				(function() {
@@ -1222,7 +1222,7 @@ Rect.prototype.contains = function(x, y) {
 					});
 				})();
 			}
-		});
+		}*/);
 		this.audio.lramp = 0.2;
 		this.audio.sstop = 0.21;
 		this.audio.lramps = 0.16;
@@ -1267,27 +1267,26 @@ Rect.prototype.contains = function(x, y) {
 		"/sounds/Steinway_Grand/",
 		"/sounds/Emotional/",
 		"/sounds/Untitled/"*/
-		"https://ledlamp.github.io/piano-sounds/Emotional",
-		"https://ledlamp.github.io/piano-sounds/Emotional_2.0",
-		"https://ledlamp.github.io/piano-sounds/GreatAndSoftPiano",
-		"https://ledlamp.github.io/piano-sounds/HardAndToughPiano",
-		"https://ledlamp.github.io/piano-sounds/HardPiano",
-		"https://ledlamp.github.io/piano-sounds/Harp",
-		"https://ledlamp.github.io/piano-sounds/Harpsicord",
-		"https://ledlamp.github.io/piano-sounds/LoudAndProudPiano",
-		"https://ledlamp.github.io/piano-sounds/MLG",
-		"https://ledlamp.github.io/piano-sounds/Music_Box",
-		"https://ledlamp.github.io/piano-sounds/NewPiano",
-		"https://ledlamp.github.io/piano-sounds/Orchestra",
-		"https://ledlamp.github.io/piano-sounds/Piano2",
-		"https://ledlamp.github.io/piano-sounds/PianoSounds",
-		"https://ledlamp.github.io/piano-sounds/Rhodes_MK1",
-		"https://ledlamp.github.io/piano-sounds/SoftPiano",
-		"https://ledlamp.github.io/piano-sounds/Steinway_Grand",
-		"https://ledlamp.github.io/piano-sounds/SweetTiddies",
-		"https://ledlamp.github.io/piano-sounds/Untitled",
-		"https://ledlamp.github.io/piano-sounds/Vintage_Upright",
-		"https://ledlamp.github.io/piano-sounds/Vintage_Upright_Soft"
+		"https://ledlamp.github.io/piano-sounds/Emotional/",
+		"https://ledlamp.github.io/piano-sounds/Emotional_2.0/",
+		"https://ledlamp.github.io/piano-sounds/GreatAndSoftPiano/",
+		"https://ledlamp.github.io/piano-sounds/HardAndToughPiano/",
+		"https://ledlamp.github.io/piano-sounds/HardPiano/",
+		"https://ledlamp.github.io/piano-sounds/Harp/",
+		"https://ledlamp.github.io/piano-sounds/Harpsicord/",
+		"https://ledlamp.github.io/piano-sounds/LoudAndProudPiano/",
+		"https://ledlamp.github.io/piano-sounds/MLG/",
+		"https://ledlamp.github.io/piano-sounds/Music_Box/",
+		"https://ledlamp.github.io/piano-sounds/NewPiano/",
+		"https://ledlamp.github.io/piano-sounds/Orchestra/",
+		"https://ledlamp.github.io/piano-sounds/Piano2/",
+		"https://ledlamp.github.io/piano-sounds/PianoSounds/",
+		"https://ledlamp.github.io/piano-sounds/Rhodes_MK1/",
+		"https://ledlamp.github.io/piano-sounds/SoftPiano/",
+		"https://ledlamp.github.io/piano-sounds/Steinway_Grand/",
+		"https://ledlamp.github.io/piano-sounds/Untitled/",
+		"https://ledlamp.github.io/piano-sounds/Vintage_Upright/",
+		"https://ledlamp.github.io/piano-sounds/Vintage_Upright_Soft/"
 	]);
 	gSoundSelector.init();
 
