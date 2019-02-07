@@ -1,7 +1,7 @@
 * { image-rendering: pixelated; }
 * { margin: 0; }
 * { user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; }
-html, body { width: 100%; height: 100%; overflow: hidden; font: 20pt verdana; color: white; text-shadow: #444 1px 1px; }
+html, body { width: 100%; height: 100%; overflow: hidden; font: 20pt verdana, "Deja Vu Sans", sans-serif; color: white; text-shadow: #444 1px 1px; }
 body { position: absolute; }
 body {
 background: #242464; /* Old browsers */
