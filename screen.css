@@ -112,7 +112,7 @@ table { border: 0; padding: 0; margin: 0; }
 #new-room-btn { position: absolute; left: 300px; top: 4px; }
 #play-alone-btn { position: absolute; left: 420px; top: 4px; }
 #sound-btn { position: absolute; left: 540px; top: 4px; }
-#room-settings-btn { position: absolute; left: 540px; top: 4px; display: none; }
+#room-settings-btn { position: absolute; left: 660px; top: 4px; display: none; }
 #midi-btn { position: absolute; left: 300px; top: 32px; }
 #record-btn { position: absolute; left: 420px; top: 32px; }
 #synth-btn { position: absolute; left: 540px; top: 32px; }
