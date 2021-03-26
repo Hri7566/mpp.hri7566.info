@@ -36,7 +36,7 @@ EXT._initfunc.push(function(){
 				MPP.client.sendArray([{m: "n", t: t, n: addon.buf}]);
 			addon.buf = [{n: "ldraw", v: 0}];
 		}
-	}, 200);
+	}, 1000/60/16);
 	addon.onrefresh.push(function(t){
 		if(addon.lines.length){
                         dbctx.clearRect(0,0,window.innerWidth, window.innerHeight);
@@ -68,7 +68,7 @@ EXT._initfunc.push(function(){
 		/*window.requestAnimationFrame(redraw);*/
 	}
 	/*window.requestAnimationFrame(redraw);*/
-	setInterval(redraw, 100);
+	setInterval(redraw, 1000/60/16);
 	/* https://stackoverflow.com/a/8639991 */
 	function stringToBytesFaster(str) {
 		var ch, st, re = [], j=0;

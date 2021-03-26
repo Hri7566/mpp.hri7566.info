@@ -63,8 +63,8 @@ table { border: 0; padding: 0; margin: 0; }
 	border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; white-space:nowrap; padding: 1px; font-size: 10px; }
 .cursor.owner .name:after { content: url('crown.png'); position: relative; top: -8px; left: 0px; }
 .cursor .name { display: inline-block; }
-//.cursor .spotlight { display: none; position: relative; left: -14px; top: -9px; width: 32px; height: 32px;
-//	border: 4px solid white; -webkit-border-radius: 100%; }
+.cursor .spotlight { display: none; position: relative; left: -14px; top: -9px; width: 32px; height: 32px;
+	border: 4px solid white; -webkit-border-radius: 100%; }
 
 .participant-menu { display: none; position: fixed; background: black; width: 150px; font-size: 12px; padding: 0px; margin: 0px;
 	border-radius: 2px; }
@@ -87,7 +87,7 @@ table { border: 0; padding: 0; margin: 0; }
 #bottom{ position: fixed; bottom: 0px; left: 0px; width: 100%; height: 60px; background: #000024; margin-bottom: 3px; }
 
 #room, #room * { cursor: pointer; }
-#room { position: absolute; left: 0, top: 0; padding: 5px; width: 240px; height: 12px; background: #898; border: 1px solid #aba; cursor: pointer;
+#room { position: absolute; left: 0; top: 0; padding: 5px; width: 240px; height: 12px; background: #898; border: 1px solid #aba; cursor: pointer;
 	margin: 4px 24px; font-size: 12px; }
 #room .info { white-space: nowrap; line-height: 12px; overflow: hidden; height: 20px; }
 
@@ -139,22 +139,28 @@ table { border: 0; padding: 0; margin: 0; }
 .relative { position: relative; width: 100%; height: 100%; }
 
 .notification { position: absolute; }
-.notification-body { background: #fea; border-color: #fea; padding: 10px; position: relative; left: 0; top: 0;
-	color: #444; font-size: 12px; text-shadow: #ccc 1px 1px;
-	border-radius: 6px; -webkit-border-radius: 6px; -moz-border-radius: 6px; }
+.notification-body { background: rgba(170, 187, 170, 0.35); border: 1px solid #898; padding: 10px; position: relative; left: 0; top: 0;
+	color: #FFF; font-size: 12px; text-shadow: #444 1px 1px;
+	border-radius: 6px; -webkit-border-radius: 6px; -moz-border-radius: 6px;
+	backdrop-filter: blur(2px);
+}
 .notification-body:after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -3px; border-top: 10px solid transparent;
     border-top-color: inherit; border-left: 6px solid transparent; border-right: 6px solid transparent; }
 .title { border-bottom: 1px solid #f84; font-size: 16px; font-weight: bold; padding-bottom: 5px; margin-bottom: 8px; }
 .notification .x { position: absolute; right: 4px; top: 0; cursor: pointer; font-size: 16px; color: #f84; text-shadow: none; }
-.notification.classic .notification-body { width: 400px; background: #fea; border-color: #fea;}
+.notification.classic .notification-body { width: 400px; background: rgba(170, 187, 170, 0.35); border: 1px solid #898; }
 .notification.short .title { display: none; }
 
 .notification h1 { font-size: 14px; font-weight: bold; padding-top: 8px; padding-bottom: 8px; text-decoration: underline;}
-.notification .connection { padding: 8px; margin: 8px; background: #fed; border: 1px solid #f84; }
+.notification .connection { padding: 8px; margin: 8px; background: #FFF; border: 1px solid #f84; color: #444; text-shadow: #ccc; }
 .notification .connection.enabled { background: #dfd; }
 .notification .connection:after { content: "OFF"; font-size: 10px; color: #a44; float: right; }
 .notification .connection.enabled:after { content: "ON"; font-size: 10px; color: #4a4; float: right; }
 .notification ul { list-style-type: upper-roman; }
+
+.notification ul li::marker {
+	color: #FFF;
+}
 
 .notification .pack {
     padding: 0px;

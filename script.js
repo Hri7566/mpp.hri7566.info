@@ -1286,7 +1286,11 @@ Rect.prototype.contains = function(x, y) {
 		"https://ledlamp.github.io/piano-sounds/Steinway_Grand/",
 		"https://ledlamp.github.io/piano-sounds/Untitled/",
 		"https://ledlamp.github.io/piano-sounds/Vintage_Upright/",
-		"https://ledlamp.github.io/piano-sounds/Vintage_Upright_Soft/"
+		"https://ledlamp.github.io/piano-sounds/Vintage_Upright_Soft/",
+		"https://hri7566.github.io/SM64MusicBox/",
+		"https://hri7566.github.io/Dog/",
+		"https://hri7566.github.io/RobloxDeathSound/",
+		"https://hri7566.github.io/MarioPaintGuitar/"
 	]);
 	gSoundSelector.init();
 
@@ -1355,7 +1359,8 @@ Rect.prototype.contains = function(x, y) {
 ////////////////////////////////////////////////////////////////
 
 	var channel_id = decodeURIComponent(window.location.hash.substr(1)) || "lobby";
-	var gClient = new Client("wss://mppws.cf");
+	// var gClient = new Client("wss://mpp.hri7566.info:8443");
+	var gClient = new Client("wss://app.multiplayerpiano.com:443");
 	gClient.setChannel(channel_id);
 	gClient.start();
 
@@ -1368,9 +1373,9 @@ Rect.prototype.contains = function(x, y) {
 		gClient.on("count", function(count) {
 			if(count > 0) {
 				$("#status").html('<span class="number">'+count+'</span> '+(count==1? 'person is' : 'people are')+' playing');
-				document.title = "Piano (" + count + ")";
+				document.title = "HMPP (" + count + ")";
 			} else {
-				document.title = "Multiplayer Piano";
+				document.title = "Hri7566's Multiplayer Piano";
 			}
 		});
 	})();
