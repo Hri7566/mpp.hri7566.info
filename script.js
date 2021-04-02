@@ -3177,3 +3177,5 @@ Rect.prototype.contains = function(x, y) {
 	
 });
 
+$("#bottom .relative").append(`<div id="hmpp-button" class="ugly-button translate">Connect to HMPP</div>`)
+$("#hmpp-button").css("position", "absolute").css("left", "780px").css("top", "32px").css("width", "110px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://mpp.hri7566.info:8443"; MPP.client.start()})
