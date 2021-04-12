@@ -236,6 +236,10 @@ table { border: 0; padding: 0; margin: 0; }
 
 .spin { animation: spin 1s linear infinite; -webkit-animation: spin 1s linear infinite; -moz-animation: spin 1s linear infinite;
 	-o-animation: spin 1s linear infinite; -ms-animation: spin 1s linear infinite; }
+.rainbow-bg{
+		animation: rainbow-bg 2.5s linear;
+		animation-iteration-count: infinite;
+}
 @-webkit-keyframes spin {
 0% { -webkit-transform: rotate(0deg);}
 100% { -webkit-transform: rotate(360deg);}
@@ -252,4 +256,42 @@ table { border: 0; padding: 0; margin: 0; }
 0% { -ms-transform: rotate(0deg);}
 100% { -ms-transform: rotate(360deg);}
 }
- 
+
+@keyframes rainbow-bg{
+	100%,0%{
+		background-color: rgb(255,0,0);
+	}
+	8%{
+		background-color: rgb(255,127,0);
+	}
+	16%{
+		background-color: rgb(255,255,0);
+	}
+	25%{
+		background-color: rgb(127,255,0);
+	}
+	33%{
+		background-color: rgb(0,255,0);
+	}
+	41%{
+		background-color: rgb(0,255,127);
+	}
+	50%{
+		background-color: rgb(0,255,255);
+	}
+	58%{
+		background-color: rgb(0,127,255);
+	}
+	66%{
+		background-color: rgb(0,0,255);
+	}
+	75%{
+		background-color: rgb(127,0,255);
+	}
+	83%{
+		background-color: rgb(255,0,255);
+	}
+	91%{
+		background-color: rgb(255,0,127);
+	}
+}
