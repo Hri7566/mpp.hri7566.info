@@ -1182,9 +1182,9 @@ Rect.prototype.contains = function(x, y) {
 				++white_spatial;
 			}
 		}
-		if(test_mode) {
+		/*if(test_mode) {
 			addKey("c", 2);
-		} else {
+		} else {*/
 			addKey("a", -1);
 			addKey("as", -1);
 			addKey("b", -1);
@@ -1195,7 +1195,7 @@ Rect.prototype.contains = function(x, y) {
 				}
 			}
 			addKey("c", 7);
-		}
+		/*}*/
 
 
 		var render_engine = CanvasRenderer.isSupported() ? CanvasRenderer : DOMRenderer;
