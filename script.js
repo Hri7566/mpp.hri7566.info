@@ -858,7 +858,7 @@ Rect.prototype.contains = function(x, y) {
 				var key = this.piano.keys[i];
 				if(key.sharp != sharp) continue;
 
-				if(key.sharp) {
+				if (key.sharp) {
 					ctx.fillRect(this.blackKeyOffset + this.whiteKeyWidth * key.spatial + ctx.lineWidth / 2,
 						y + ctx.lineWidth / 2,
 						this.blackKeyWidth - ctx.lineWidth, this.blackKeyHeight - ctx.lineWidth);
