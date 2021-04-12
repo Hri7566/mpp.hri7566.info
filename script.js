@@ -3183,6 +3183,3 @@ $("#hmpp-button").css("position", "absolute").css("left", "780px").css("top", "3
 $("#bottom .relative").append(`<div id="mpp-button" class="ugly-button translate">MPP</div>`)
 $("#mpp-button").css("position", "absolute").css("left", "900px").css("top", "32px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://app_legacy.multiplayerpiano.com:443"; MPP.client.start()})
 
-$("#bottom .relative").append(`<div id="exp-button" class="ugly-button translate">Experimental</div>`)
-$("#exp-button").css("position", "absolute").css("left", "1020px").css("top", "32px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://app.hri7566.info:8443"; MPP.client.start()})
-
