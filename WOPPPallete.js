@@ -18,7 +18,7 @@ var removePObject = function(clr){
 	document.getElementById('WOPP-Pallete').innerHTML = Object.keys(WOPPPallete);
 };
 
-$("body #bottom .relative").append(`<div id="WOPPPallete" class="ugly-button 2_btn" style="position: fixed;bottom: 8px;right: 220px;width: 180px;">${ru ? "Палитра" : "Pallete"}</div>`);
+$("body #bottom .relative").append(`<div id="WOPPPallete" class="ugly-button 2_btn" style="position: fixed;bottom: 8px;right: 220px;width: 110px;">${ru ? "Палитра" : "Pallete"}</div>`);
 
 $("#WOPPPallete").click(function(){
 	MPP.client.emit("notification", {
