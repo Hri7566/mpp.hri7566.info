@@ -1360,7 +1360,8 @@ Rect.prototype.contains = function(x, y) {
 
 	var channel_id = decodeURIComponent(window.location.hash.substr(1)) || "lobby";
 	// var gClient = new Client("wss://app.multiplayerpiano.com:443");
-	var gClient = new Client("wss://mpp.hri7566.info:8443");
+	// var gClient = new Client("wss://mpp.hri7566.info:8443");
+	var gClient = new Client("ws://192.168.1.242:8080");
 	gClient.setChannel(channel_id);
 	gClient.start();
 
