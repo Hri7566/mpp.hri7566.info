@@ -57,14 +57,14 @@ table { border: 0; padding: 0; margin: 0; }
 .slide-left { left: -100%; }
 .slide-right { left: 100%; }
 
-.cursor { width: 23px; height: 30px; background: url('cursor.png'); position: absolute; pointer-events: none;
+.cursor { width: 23px; height: 30px; background: url('cursor.svg'); position: absolute; pointer-events: none;
 	margin-left: -5px; margin-top: -5px; left: 200%; top: 100%;}
 .cursor .name { display: inline; position: relative; left: 12px; top: 10px; pointer-events: none; color: #fff; background: #000;
 	border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; white-space:nowrap; padding: 1px; font-size: 10px; }
 .cursor.owner .name:after { content: url('crown.png'); position: relative; top: -8px; left: 0px; }
 .cursor .name { display: inline-block; }
-//.cursor .spotlight { display: none; position: relative; left: -14px; top: -9px; width: 32px; height: 32px;
-//	border: 4px solid white; -webkit-border-radius: 100%; }
+.cursor .spotlight { display: none; position: relative; left: -14px; top: -9px; width: 32px; height: 32px;
+	border: 4px solid white; -webkit-border-radius: 100%; }
 
 .participant-menu { display: none; position: fixed; background: black; width: 150px; font-size: 12px; padding: 0px; margin: 0px;
 	border-radius: 2px; }
