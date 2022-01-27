@@ -3176,8 +3176,8 @@ Rect.prototype.contains = function(x, y) {
 	
 });
 
-$("#bottom .relative").append(`<div id="hmpp-button" class="ugly-button translate">HMPP</div>`)
-$("#hmpp-button").css("position", "absolute").css("left", "780px").css("top", "32px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://mpp.hri7566.info:8443"; MPP.client.start()})
+// $("#bottom .relative").append(`<div id="hmpp-button" class="ugly-button translate">HMPP</div>`)
+// $("#hmpp-button").css("position", "absolute").css("left", "780px").css("top", "32px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://mpp.hri7566.info:8443"; MPP.client.start()})
 
-$("#bottom .relative").append(`<div id="mpp-button" class="ugly-button translate">MPP</div>`)
-$("#mpp-button").css("position", "absolute").css("left", "900px").css("top", "32px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://app_legacy.multiplayerpiano.com:443"; MPP.client.start()})
+// $("#bottom .relative").append(`<div id="mpp-button" class="ugly-button translate">MPP</div>`)
+// $("#mpp-button").css("position", "absolute").css("left", "900px").css("top", "32px").on("click", () => {MPP.client.stop(); MPP.client.uri = "wss://app_legacy.multiplayerpiano.com:443"; MPP.client.start()})
