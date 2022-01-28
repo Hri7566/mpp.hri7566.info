@@ -2475,7 +2475,7 @@ Rect.prototype.contains = function(x, y) {
 				window.location = url;
 				return;
 			}*/
-			window.location.hash = encodeURIComponent(name);
+			window.location.pathname = '/' + encodeURIComponent(name);
 		}
 		
 		gClient.setChannel(name, settings);
