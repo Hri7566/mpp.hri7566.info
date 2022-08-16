@@ -1360,7 +1360,10 @@ Rect.prototype.contains = function(x, y) {
 
 	// var channel_id = decodeURIComponent(window.location.hash.substr(1)) || "lobby";
 	var channel_id = decodeURIComponent(window.location.pathname.substr(1) || "lobby");
-	var gClient = new Client("wss://mpp.hri7566.info:8443");
+	// var gClient = new Client("wss://mpp.hri7566.info:8443");
+	let protocol = window.location.protocol == 'https:' ? 'wss:' : 'ws:';
+	var gClient = new Client(`${protocol}//${window.location.hostname}:8443`);
+
 	gClient.setChannel(channel_id);
 	gClient.start();
 
@@ -2756,7 +2759,7 @@ Rect.prototype.contains = function(x, y) {
 		if (navigator.requestMIDIAccess) {
 			navigator.requestMIDIAccess().then(
 				function(midi) {
-					console.log(midi);
+					// console.log(midi);
 					function midimessagehandler(evt) {
 						if(!evt.target.enabled) return;
 						//console.log(evt);
@@ -2802,7 +2805,7 @@ Rect.prototype.contains = function(x, y) {
 								if(input.enabled !== false) {
 									input.enabled = true;
 								}
-								console.log("input", input);
+								// console.log("input", input);
 							}
 						}
 						if(midi.outputs.size > 0) {
@@ -2810,7 +2813,7 @@ Rect.prototype.contains = function(x, y) {
 							for(var output_it = outputs.next(); output_it && !output_it.done; output_it = outputs.next()) {
 								var output = output_it.value;
 								//output.enabled = false; // edit: don't touch
-								console.log("output", output);
+								// console.log("output", output);
 							}
 							gMidiOutTest = function(note_name, vel, delay_ms) {
 								var note_number = MIDI_KEY_NAMES.indexOf(note_name);
@@ -2860,7 +2863,7 @@ Rect.prototype.contains = function(x, y) {
 										if(input.id === evt.target.connectionId) {
 											input.enabled = !input.enabled;
 											evt.target.classList.toggle("enabled");
-											console.log("click", input);
+											// console.log("click", input);
 											return;
 										}
 									}
@@ -2887,7 +2890,7 @@ Rect.prototype.contains = function(x, y) {
 										if(output.id === evt.target.connectionId) {
 											output.enabled = !output.enabled;
 											evt.target.classList.toggle("enabled");
-											console.log("click", output);
+											// console.log("click", output);
 											return;
 										}
 									}

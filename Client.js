@@ -133,6 +133,7 @@ Client.prototype.connect = function() {
 		var transmission = JSON.parse(evt.data);
 		for(var i = 0; i < transmission.length; i++) {
 			var msg = transmission[i];
+			if (msg.m !== 'm' && msg.m !== 'n' && self.uri.includes('localhost')) console.log(msg);
 			self.emit(msg.m, msg);
 		}
 	});
@@ -171,6 +172,10 @@ Client.prototype.bindEventListeners = function() {
 };
 
 Client.prototype.send = function(raw) {
+	let msgs = JSON.parse(raw);
+	for (let msg of msgs) {
+		if (msg.m !== 'm') console.log(msg);
+	}
 	if(this.isConnected()) this.ws.send(raw);
 };
 
