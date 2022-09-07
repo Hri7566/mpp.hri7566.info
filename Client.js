@@ -133,7 +133,7 @@ Client.prototype.connect = function() {
 		var transmission = JSON.parse(evt.data);
 		for(var i = 0; i < transmission.length; i++) {
 			var msg = transmission[i];
-			if (msg.m !== 'm' && msg.m !== 'n' && self.uri.includes('localhost')) console.log(msg);
+			// if (msg.m !== 'm' && msg.m !== 'n' && self.uri.includes('localhost')) console.log(msg);
 			self.emit(msg.m, msg);
 		}
 	});
