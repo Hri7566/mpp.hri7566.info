@@ -508,8 +508,123 @@ Rect.prototype.contains = function(x, y) {
 		this.masterGain.gain.value = this.volume;
 	};
 
+	class BlitzNote {
+		constructor(buffer, gain, audioCtx) {
+		  this.buffer = buffer
+		  this.source = null
+		  this.gain = gain
+		  this.audioCtx = audioCtx
+		}
+	  
+		play(velocity = 0) {
+		  if (this.source) {
+			this.source.stop()
+		  }
+	  
+		  if (velocity) {
+			this.gain.gain.setValueAtTime(velocity, this.audioCtx.currentTime)
+	  
+			this.source = this.audioCtx.createBufferSource()
+			this.source.buffer = this.buffer
+			this.source.connect(this.gain)
+			this.source.addEventListener("ended", () => (this.source = null))
+			this.source.start()
+		  } else {
+			this.source = null
+		  }
+		}
+	  }
 
+	  
 
+	class AudioEngineBlitz {
+		constructor() {}
+
+		init() {
+			this.paused = true;
+			this.audio = new AudioContext({
+				latencyHint: 'interactive'
+			});
+			this.audio.suspend();
+			this.lramp = 0.2;
+			this.volume = this.audio.createGain();
+			this.volume.connect(this.audio.destination);
+			this.notes = new Array(88);
+			this.minvol = 0;
+			this.keys = ["a-1","as-1","b-1","c0","cs0","d0","ds0","e0","f0","fs0","g0","gs0","a0","as0","b0","c1","cs1","d1","ds1","e1","f1","fs1","g1","gs1","a1","as1","b1","c2","cs2","d2","ds2","e2","f2","fs2","g2","gs2","a2","as2","b2","c3","cs3","d3","ds3","e3","f3","fs3","g3","gs3","a3","as3","b3","c4","cs4","d4","ds4","e4","f4","fs4","g4","gs4","a4","as4","b4","c5","cs5","d5","ds5","e5","f5","fs5","g5","gs5","a5","as5","b5","c6","cs6","d6","ds6","e6","f6","fs6","g6","gs6","a6","as6","b6","c7"];
+			this.playing = {};
+			this.audio.lramp = 0.2;
+			return this;
+
+			// Promise.all(keys.map((k) => fetch(`https://mppclone.com/sounds/mppclassic/${k}.mp3`).then((r) => r.arrayBuffer())))
+			// 	.then((p) => Promise.all(p.map((blob) => this.audio.decodeAudioData(blob))))
+			// 	.then((buffers) => {
+			// 		const globalVolume = this.audio.createGain()
+			// 		globalVolume.connect(this.audio.destination)
+			
+			// 		const notes = buffers.map((buffer) => {
+			// 			const gain = this.audio.createGain()
+			// 			gain.connect(globalVolume)
+				
+			// 			return new BlitzNote(buffer, gain, this.audio)
+			// 		});
+			// 	})
+		}
+
+		load(id, url, cb) {
+			fetch(url).then(r => r.arrayBuffer()).then(b => this.audio.decodeAudioData(b)).then(buffer => {
+						let vol = this.audio.createGain();
+						vol.connect(this.volume);
+						this.notes[this.keys.indexOf(id)] = new BlitzNote(buffer, vol, this.audio);
+						cb();
+				});// .then(blob => this.audio.decodeAudioData(blob))
+					// audio.context.decodeAudioData(req.response, function(buffer) {
+					// 	audio.sounds[id] = buffer;
+					// 	if(cb) cb();
+					// });
+		}
+
+		setVolume(vol) {
+			this.volume.gain.setValueAtTime(vol, this.audio.currentTime);
+		}
+		
+		play(key, vol, delay_ms, participant) {
+			queueMicrotask(() => {
+				this.playReal(key, vol, delay_ms, participant);
+			});
+		}
+
+		playReal(key, vol, delay_ms, participant) {
+			if (this.paused) return;
+			const note = this.notes[this.keys.indexOf(key)];
+			let v = this.audio.createGain();
+			v.connect(this.volume);
+			note.gain = v;
+			this.playing[key] = note;
+			setTimeout(() => {
+				note.play(vol);
+			}, delay_ms);
+		}
+
+		stop(key, delay, id) {
+			if (this.paused) return;
+			const note = this.playing[key];
+			if (!note) return;
+			note.gain.gain.linearRampToValueAtTime(0.0, this.audio.currentTime + (delay + this.lramp));
+			note.gain.gain.setValueAtTime(note.gain.gain.value, this.audio.currentTime + delay);
+			// note.play(0);
+		}
+
+		resume() {
+			this.audio.resume();
+			this.paused = false;
+
+			// this.notes.forEach(n => {
+			// 	n.play(1);
+			// })
+		}
+	}
+	  
 
 
 
@@ -1517,9 +1632,10 @@ Rect.prototype.contains = function(x, y) {
 
 
 		window.AudioContext = window.AudioContext || window.webkitAudioContext || undefined;
-		var audio_engine = AudioEngineWeb;
+		// var audio_engine = AudioEngineWeb;
+		// var audio_engine = AudioEngineBlitz;
 
-		this.audio = new audio_engine().init(/*function() {
+		this.audio = new AudioEngineBlitz().init(() => {// new audio_engine().init(/*function() {
 			for(var i in piano.keys) {
 				if(!piano.keys.hasOwnProperty(i)) continue;
 				(function() {
@@ -1532,13 +1648,13 @@ Rect.prototype.contains = function(x, y) {
 					});
 				})();
 			}
-		}*/);
-		this.audio.lramp = 0.2;
-		this.audio.sstop = 0.21;
-		this.audio.lramps = 0.16;
-		this.audio.lramps2 = 0.4;
-		this.audio.sstops = 0.41;
-		this.audio.minvol = 0.05;
+		}/**/);
+		// this.audio.lramp = 0.2;
+		// this.audio.sstop = 0.21;
+		// this.audio.lramps = 0.16;
+		// this.audio.lramps2 = 0.4;
+		// this.audio.sstops = 0.41;
+		// this.audio.minvol = 0.05;
 	};
 
 	Piano.prototype.play = function(note, vol, participant, delay_ms) {
@@ -2582,7 +2698,6 @@ Rect.prototype.contains = function(x, y) {
 
 
 
-
 	if(window.localStorage) {
 
 		if(localStorage.volume) {
@@ -2708,7 +2823,7 @@ Rect.prototype.contains = function(x, y) {
 	};
 	
 	function openModal(selector, focus) {
-		chat.blur();
+		MPP.chat.blur();
 		releaseKeyboard();
 		$(document).on("keydown", modalHandleEsc);
 		$("#modal #modals > *").hide();
@@ -3253,60 +3368,60 @@ Rect.prototype.contains = function(x, y) {
 	};
 
 	// record mp3
-	(function() {
-		var button = document.querySelector("#record-btn");
-		var audio = MPP.piano.audio;
-		var context = audio.context;
-		var encoder_sample_rate = 44100;
-		var encoder_kbps = 128;
-		var encoder = null;
-		var scriptProcessorNode = context.createScriptProcessor(4096, 2, 2);
-		var recording = false;
-		var recording_start_time = 0;
-		var mp3_buffer = [];
-		button.addEventListener("click", function(evt) {
-			if(!recording) {
-				// start recording
-				mp3_buffer = [];
-				encoder = new lamejs.Mp3Encoder(2, encoder_sample_rate, encoder_kbps);
-				scriptProcessorNode.onaudioprocess = onAudioProcess;
-				audio.masterGain.connect(scriptProcessorNode);
-				scriptProcessorNode.connect(context.destination);
-				recording_start_time = Date.now();
-				recording = true;
-				button.textContent = "Stop Recording";
-				button.classList.add("stuck");
-				new Notification({"id": "mp3", "title": "Recording MP3...", "html": "It's recording now.  This could make things slow, maybe.  Maybe give it a moment to settle before playing.<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 10000});
-			} else {
-				// stop recording
-				var mp3buf = encoder.flush();
-				mp3_buffer.push(mp3buf);
-				var blob = new Blob(mp3_buffer, {type: "audio/mp3"});
-				var url = URL.createObjectURL(blob);
-				scriptProcessorNode.onaudioprocess = null;
-				audio.masterGain.disconnect(scriptProcessorNode);
-				scriptProcessorNode.disconnect(context.destination);
-				recording = false;
-				button.textContent = "Record MP3";
-				button.classList.remove("stuck");
-				new Notification({"id": "mp3", "title": "MP3 recording finished", "html": "<a href=\""+url+"\" target=\"blank\">And here it is!</a> (open or save as)<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 0});
-			}
-		});
-		function onAudioProcess(evt) {
-			var inputL = evt.inputBuffer.getChannelData(0);
-			var inputR = evt.inputBuffer.getChannelData(1);
-			var mp3buf = encoder.encodeBuffer(convert16(inputL), convert16(inputR));
-			mp3_buffer.push(mp3buf);
-		}
-		function convert16(samples) {
-			var len = samples.length;
-			var result = new Int16Array(len);
-			for(var i = 0; i < len; i++) {
-				result[i] = 0x8000 * samples[i];
-			}
-			return(result);
-		}
-	})();
+	// (function() {
+	// 	var button = document.querySelector("#record-btn");
+	// 	var audio = MPP.piano.audio;
+	// 	var context = audio.context;
+	// 	var encoder_sample_rate = 44100;
+	// 	var encoder_kbps = 128;
+	// 	var encoder = null;
+	// 	var scriptProcessorNode = context.createScriptProcessor(4096, 2, 2);
+	// 	var recording = false;
+	// 	var recording_start_time = 0;
+	// 	var mp3_buffer = [];
+	// 	button.addEventListener("click", function(evt) {
+	// 		if(!recording) {
+	// 			// start recording
+	// 			mp3_buffer = [];
+	// 			encoder = new lamejs.Mp3Encoder(2, encoder_sample_rate, encoder_kbps);
+	// 			scriptProcessorNode.onaudioprocess = onAudioProcess;
+	// 			audio.masterGain.connect(scriptProcessorNode);
+	// 			scriptProcessorNode.connect(context.destination);
+	// 			recording_start_time = Date.now();
+	// 			recording = true;
+	// 			button.textContent = "Stop Recording";
+	// 			button.classList.add("stuck");
+	// 			new Notification({"id": "mp3", "title": "Recording MP3...", "html": "It's recording now.  This could make things slow, maybe.  Maybe give it a moment to settle before playing.<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 10000});
+	// 		} else {
+	// 			// stop recording
+	// 			var mp3buf = encoder.flush();
+	// 			mp3_buffer.push(mp3buf);
+	// 			var blob = new Blob(mp3_buffer, {type: "audio/mp3"});
+	// 			var url = URL.createObjectURL(blob);
+	// 			scriptProcessorNode.onaudioprocess = null;
+	// 			audio.masterGain.disconnect(scriptProcessorNode);
+	// 			scriptProcessorNode.disconnect(context.destination);
+	// 			recording = false;
+	// 			button.textContent = "Record MP3";
+	// 			button.classList.remove("stuck");
+	// 			new Notification({"id": "mp3", "title": "MP3 recording finished", "html": "<a href=\""+url+"\" target=\"blank\">And here it is!</a> (open or save as)<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 0});
+	// 		}
+	// 	});
+	// 	function onAudioProcess(evt) {
+	// 		var inputL = evt.inputBuffer.getChannelData(0);
+	// 		var inputR = evt.inputBuffer.getChannelData(1);
+	// 		var mp3buf = encoder.encodeBuffer(convert16(inputL), convert16(inputR));
+	// 		mp3_buffer.push(mp3buf);
+	// 	}
+	// 	function convert16(samples) {
+	// 		var len = samples.length;
+	// 		var result = new Int16Array(len);
+	// 		for(var i = 0; i < len; i++) {
+	// 			result[i] = 0x8000 * samples[i];
+	// 		}
+	// 		return(result);
+	// 	}
+	// })();
 
 
 
@@ -3318,9 +3433,9 @@ Rect.prototype.contains = function(x, y) {
 	var enableSynth = false;
 	var audio = gPiano.audio;
 	var context = gPiano.audio.context;
-	var synth_gain = context.createGain();
-	synth_gain.gain.value = 0.05;
-	synth_gain.connect(audio.synthGain);
+	// var synth_gain = context.createGain();
+	// synth_gain.gain.value = 0.05;
+	// synth_gain.connect(audio.synthGain);
 
 	var osc_types = ["sine", "square", "sawtooth", "triangle"];
 	var osc_type_index = 1;
@@ -3484,12 +3599,25 @@ Rect.prototype.contains = function(x, y) {
 		}
 	})();
 	
-	var onClick = function(evt) {
-		document.removeEventListener("click", onClick);
-		MPP.piano.audio.context.resume();
-	}
-	document.addEventListener("click", onClick);
-	
+	// var onClick = function(evt) {
+	// 	document.removeEventListener("click", onClick);
+	// 	MPP.piano.audio.audio.resume();
+	// }
+	// document.addEventListener("click", onClick);
+
+	openModal("#sound-warning");
+	var user_interact = function(evt) {
+        if ((evt.path || (evt.composedPath && evt.composedPath())).includes(document.getElementById('sound-warning')) || evt.target === document.getElementById('sound-warning')) {
+            closeModal();
+        }
+        document.removeEventListener("click", user_interact);
+        gPiano.audio.resume();
+    }
+	document.addEventListener("click", user_interact)
+
+	gClient.on('hi', msg => {
+		$('.motd').text(msg.motd);
+	})
 });
 
 // $("#bottom .relative").append(`<div id="hmpp-button" class="ugly-button translate">HMPP</div>`)
