@@ -2,7 +2,8 @@ EXT = window.EXT || {_initfunc: []};
 EXT._initfunc.push(function(){
 	var addon = EXT.button = {__proto__: null};
 	var injectedStyles = [
-		'.notification .csetting { padding: 4px; margin: 4px; background: #ddf; border: 1px solid #f84; }',
+		// '.notification .csetting { padding: 4px; margin: 4px; background: #ddf; border: 1px solid #f84; }',
+		'.notification .csetting { padding: 4px; margin: 4px; /* background: #ddf; */ /* border: 1px solid #f84; */ border: 1px solid #888; }',
 		'.notification .csetting:after { content: "USE"; font-size: 10px; line-height: 16px; color: #44a; float: right; }',
 		'.notification .connection.csettgl { padding: 4px; margin: 4px; }',
 		'.notification .connection.csettgl:after { line-height: 16px; }'
@@ -126,7 +127,7 @@ EXT._initfunc.push(function(){
 	addon.createList = function(listobj, title, id, target, duration) {
 		var div = document.createElement("div");
 		var keyLayoutTitle = document.createElement("span");
-		keyLayoutTitle.innerHTML = "Keyboard Layout:";
+		keyLayoutTitle.innerHTML = "Keyboard Layout:  ";
 		div.appendChild(keyLayoutTitle);
 		var keyLayout = document.createElement("select");
 		for (i in keyLayouts) {
