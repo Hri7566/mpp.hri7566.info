@@ -386,7 +386,11 @@ Rect.prototype.contains = function(x, y) {
 	AudioEngineWeb.prototype.init = function(cb) {
 		AudioEngine.prototype.init.call(this);
 
-		this.context = new AudioContext();
+		this.paused = true;
+		this.context = new AudioContext({
+			latencyHint: 'interactive'
+		});
+		// this.context.suspend();
 
 		this.masterGain = this.context.createGain();
 		this.masterGain.connect(this.context.destination);
@@ -507,6 +511,11 @@ Rect.prototype.contains = function(x, y) {
 		AudioEngine.prototype.setVolume.call(this, vol);
 		this.masterGain.gain.value = this.volume;
 	};
+
+	AudioEngineWeb.prototype.resume = function() {
+		this.paused = false;
+		this.context.resume();
+	}
 
 	class BlitzNote {
 		constructor(buffer, gain, audioCtx) {
@@ -1659,12 +1668,12 @@ Rect.prototype.contains = function(x, y) {
 				})();
 			}
 		}/**/);
-		// this.audio.lramp = 0.2;
-		// this.audio.sstop = 0.21;
-		// this.audio.lramps = 0.16;
-		// this.audio.lramps2 = 0.4;
-		// this.audio.sstops = 0.41;
-		// this.audio.minvol = 0.05;
+		this.audio.lramp = 0.2;
+		this.audio.sstop = 0.21;
+		this.audio.lramps = 0.16;
+		this.audio.lramps2 = 0.4;
+		this.audio.sstops = 0.41;
+		this.audio.minvol = 0.05;
 	};
 
 	Piano.prototype.play = function(note, vol, participant, delay_ms) {
