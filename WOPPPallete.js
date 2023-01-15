@@ -19,7 +19,7 @@ var removePObject = function(clr){
 };
 
 // $("body #bottom .relative").append(`<div id="WOPPPallete" class="ugly-button 2_btn" style="position: fixed;bottom: 8px;right: 220px;width: 110px;">${ru ? "Палитра" : "Pallete"}</div>`);
-$("body #bottom .relative").append(`<div id="WOPPPallete" class="ugly-button 2_btn" style="position: fixed;bottom: 8px;right: 220px;width: 110px;">${ru ? "Палитра" : "Palette"}</div>`);
+$("body #bottom .relative").append(`<div id="WOPPPallete" class="ugly-button 2_btn" style="position: fixed;bottom: 8px;left: 420px;width: 100px;">${ru ? "Палитра" : "Palette"}</div>`);
 
 $("#WOPPPallete").click(function(){
 	// MPP.client.emit("notification", {

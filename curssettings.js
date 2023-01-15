@@ -160,7 +160,6 @@ EXT._initfunc.push(function(){
 		return {"id":id, "title":title,"duration":''+duration,"html":div,"target":target}
 	}
 	
-	
 	var settings = {
 		piano: {
 			title: "Piano",

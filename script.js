@@ -548,6 +548,7 @@ Rect.prototype.contains = function(x, y) {
 			this.audio.suspend();
 			this.lramp = 0.2;
 			this.volume = this.audio.createGain();
+			this.setVolume(localStorage.volume || 0.6);
 			this.volume.connect(this.audio.destination);
 			this.notes = new Array(88);
 			this.minvol = 0;
@@ -585,7 +586,16 @@ Rect.prototype.contains = function(x, y) {
 		}
 
 		setVolume(vol) {
-			this.volume.gain.setValueAtTime(vol, this.audio.currentTime);
+			// this.volume.gain.setValueAtTime(vol, this.audio.currentTime);
+			try {
+				this.volume.gain.setValueAtTime(vol / 2, this.audio.currentTime);
+			} catch (err) {
+				try {
+					this.volume.gain.setValueAtTime(vol, this.audio.currentTime);
+				} catch (err) {
+					this.volume.gain.setValueAtTime(0.3, this.audio.currentTime);
+				}
+			}
 		}
 		
 		play(key, vol, delay_ms, participant) {
@@ -2762,6 +2772,8 @@ Rect.prototype.contains = function(x, y) {
 			else info.removeClass("crownsolo");
 			if(!room.settings.visible) info.addClass("not-visible");
 			else info.removeClass("not-visible");
+			if(room.banned) info.addClass("banned");
+			else info.removeClass("banned")
 		}
 	});
 	$("#room").on("click", function(evt) {
@@ -3469,135 +3481,135 @@ Rect.prototype.contains = function(x, y) {
 		this.osc.stop(time + osc1_release);
 	};
 
-	(function() {
-		var button = document.getElementById("synth-btn");
-		var notification;
+	// (function() {
+	// 	var button = document.getElementById("synth-btn");
+	// 	var notification;
 
-		button.addEventListener("click", function() {
-			if(notification) {
-				notification.close();
-			} else {
-				showSynth();
-			}
-		});
+	// 	button.addEventListener("click", function() {
+	// 		if(notification) {
+	// 			notification.close();
+	// 		} else {
+	// 			showSynth();
+	// 		}
+	// 	});
 
-		function showSynth() {
+	// 	function showSynth() {
 
-			var html = document.createElement("div");
+	// 		var html = document.createElement("div");
 
-			// on/off button
-			(function() {
-				var button = document.createElement("input");
-				mixin(button, {type: "button", value: "ON/OFF", className: enableSynth ? "switched-on" : "switched-off"});
-				button.addEventListener("click", function(evt) {
-					enableSynth = !enableSynth;
-					button.className = enableSynth ? "switched-on" : "switched-off";
-					if(!enableSynth) {
-						// stop all
-						for(var i in audio.playings) {
-							if(!audio.playings.hasOwnProperty(i)) continue;
-							var playing = audio.playings[i];
-							if(playing && playing.voice) {
-								playing.voice.osc.stop();
-								playing.voice = undefined;
-							}
-						}
-					}
-				});
-				html.appendChild(button);
-			})();
+	// 		// on/off button
+	// 		(function() {
+	// 			var button = document.createElement("input");
+	// 			mixin(button, {type: "button", value: "ON/OFF", className: enableSynth ? "switched-on" : "switched-off"});
+	// 			button.addEventListener("click", function(evt) {
+	// 				enableSynth = !enableSynth;
+	// 				button.className = enableSynth ? "switched-on" : "switched-off";
+	// 				if(!enableSynth) {
+	// 					// stop all
+	// 					for(var i in audio.playings) {
+	// 						if(!audio.playings.hasOwnProperty(i)) continue;
+	// 						var playing = audio.playings[i];
+	// 						if(playing && playing.voice) {
+	// 							playing.voice.osc.stop();
+	// 							playing.voice = undefined;
+	// 						}
+	// 					}
+	// 				}
+	// 			});
+	// 			html.appendChild(button);
+	// 		})();
 
-			// mix
-			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
-			html.appendChild(knob);
-			knob = new Knob(knob, 0, 100, 0.1, 50, "mix", "%");
-			knob.canvas.style.width = "32px";
-			knob.canvas.style.height = "32px";
-			knob.on("change", function(k) {
-				var mix = k.value / 100;
-				audio.pianoGain.gain.value = 1 - mix;
-				audio.synthGain.gain.value = mix;
-			});
-			knob.emit("change", knob);
+	// 		// mix
+	// 		var knob = document.createElement("canvas");
+	// 		mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
+	// 		html.appendChild(knob);
+	// 		knob = new Knob(knob, 0, 100, 0.1, 50, "mix", "%");
+	// 		knob.canvas.style.width = "32px";
+	// 		knob.canvas.style.height = "32px";
+	// 		knob.on("change", function(k) {
+	// 			var mix = k.value / 100;
+	// 			audio.pianoGain.gain.value = 1 - mix;
+	// 			audio.synthGain.gain.value = mix;
+	// 		});
+	// 		knob.emit("change", knob);
 
-			// osc1 type
-			(function() {
-				osc1_type = osc_types[osc_type_index];
-				var button = document.createElement("input");
-				mixin(button, {type: "button", value: osc_types[osc_type_index]});
-				button.addEventListener("click", function(evt) {
-					if(++osc_type_index >= osc_types.length) osc_type_index = 0;
-					osc1_type = osc_types[osc_type_index];
-					button.value = osc1_type;
-				});
-				html.appendChild(button);
-			})();
+	// 		// osc1 type
+	// 		(function() {
+	// 			osc1_type = osc_types[osc_type_index];
+	// 			var button = document.createElement("input");
+	// 			mixin(button, {type: "button", value: osc_types[osc_type_index]});
+	// 			button.addEventListener("click", function(evt) {
+	// 				if(++osc_type_index >= osc_types.length) osc_type_index = 0;
+	// 				osc1_type = osc_types[osc_type_index];
+	// 				button.value = osc1_type;
+	// 			});
+	// 			html.appendChild(button);
+	// 		})();
 
-			// osc1 attack
-			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
-			html.appendChild(knob);
-			knob = new Knob(knob, 0, 1, 0.001, osc1_attack, "osc1 attack", "s");
-			knob.canvas.style.width = "32px";
-			knob.canvas.style.height = "32px";
-			knob.on("change", function(k) {
-				osc1_attack = k.value;
-			});
-			knob.emit("change", knob);
+	// 		// osc1 attack
+	// 		var knob = document.createElement("canvas");
+	// 		mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
+	// 		html.appendChild(knob);
+	// 		knob = new Knob(knob, 0, 1, 0.001, osc1_attack, "osc1 attack", "s");
+	// 		knob.canvas.style.width = "32px";
+	// 		knob.canvas.style.height = "32px";
+	// 		knob.on("change", function(k) {
+	// 			osc1_attack = k.value;
+	// 		});
+	// 		knob.emit("change", knob);
 
-			// osc1 decay
-			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
-			html.appendChild(knob);
-			knob = new Knob(knob, 0, 2, 0.001, osc1_decay, "osc1 decay", "s");
-			knob.canvas.style.width = "32px";
-			knob.canvas.style.height = "32px";
-			knob.on("change", function(k) {
-				osc1_decay = k.value;
-			});
-			knob.emit("change", knob);
+	// 		// osc1 decay
+	// 		var knob = document.createElement("canvas");
+	// 		mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
+	// 		html.appendChild(knob);
+	// 		knob = new Knob(knob, 0, 2, 0.001, osc1_decay, "osc1 decay", "s");
+	// 		knob.canvas.style.width = "32px";
+	// 		knob.canvas.style.height = "32px";
+	// 		knob.on("change", function(k) {
+	// 			osc1_decay = k.value;
+	// 		});
+	// 		knob.emit("change", knob);
 
-			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
-			html.appendChild(knob);
-			knob = new Knob(knob, 0, 1, 0.001, osc1_sustain, "osc1 sustain", "x");
-			knob.canvas.style.width = "32px";
-			knob.canvas.style.height = "32px";
-			knob.on("change", function(k) {
-				osc1_sustain = k.value;
-			});
-			knob.emit("change", knob);
+	// 		var knob = document.createElement("canvas");
+	// 		mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
+	// 		html.appendChild(knob);
+	// 		knob = new Knob(knob, 0, 1, 0.001, osc1_sustain, "osc1 sustain", "x");
+	// 		knob.canvas.style.width = "32px";
+	// 		knob.canvas.style.height = "32px";
+	// 		knob.on("change", function(k) {
+	// 			osc1_sustain = k.value;
+	// 		});
+	// 		knob.emit("change", knob);
 
-			// osc1 release
-			var knob = document.createElement("canvas");
-			mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
-			html.appendChild(knob);
-			knob = new Knob(knob, 0, 2, 0.001, osc1_release, "osc1 release", "s");
-			knob.canvas.style.width = "32px";
-			knob.canvas.style.height = "32px";
-			knob.on("change", function(k) {
-				osc1_release = k.value;
-			});
-			knob.emit("change", knob);
+	// 		// osc1 release
+	// 		var knob = document.createElement("canvas");
+	// 		mixin(knob, {width: 32 * devicePixelRatio, height: 32 * devicePixelRatio, className: "knob"});
+	// 		html.appendChild(knob);
+	// 		knob = new Knob(knob, 0, 2, 0.001, osc1_release, "osc1 release", "s");
+	// 		knob.canvas.style.width = "32px";
+	// 		knob.canvas.style.height = "32px";
+	// 		knob.on("change", function(k) {
+	// 			osc1_release = k.value;
+	// 		});
+	// 		knob.emit("change", knob);
 
 
 
-			var div = document.createElement("div");
-			div.innerHTML = "<br><br><br><br><center>this space intentionally left blank</center><br><br><br><br>";
-			html.appendChild(div);
+	// 		var div = document.createElement("div");
+	// 		div.innerHTML = "<br><br><br><br><center>this space intentionally left blank</center><br><br><br><br>";
+	// 		html.appendChild(div);
 
 			
 
-			// notification
-			notification = new Notification({title: "Synthesize", html: html, duration: -1, target: "#synth-btn"});
-			notification.on("close", function() {
-				var tip = document.getElementById("tooltip");
-				if(tip) tip.parentNode.removeChild(tip);
-				notification = null;
-			});
-		}
-	})();
+	// 		// notification
+	// 		notification = new Notification({title: "Synthesize", html: html, duration: -1, target: "#synth-btn"});
+	// 		notification.on("close", function() {
+	// 			var tip = document.getElementById("tooltip");
+	// 			if(tip) tip.parentNode.removeChild(tip);
+	// 			notification = null;
+	// 		});
+	// 	}
+	// })();
 	
 	// var onClick = function(evt) {
 	// 	document.removeEventListener("click", onClick);
@@ -3617,7 +3629,20 @@ Rect.prototype.contains = function(x, y) {
 
 	gClient.on('hi', msg => {
 		$('.motd').text(msg.motd);
-	})
+	});
+
+	$("#unban-btn").on('click', () => {
+		openModal('#unban');
+	});
+
+	$('#unban .submit').on('click', () => {
+		let _id = $('#unban input[name=_id]').val();
+		if (_id !== '') {
+			MPP.client.sendArray([{ m: 'unban', _id }])
+		}
+		$('#unban input[name=_id]').val('');
+		closeModal();
+	});
 });
 
 // $("#bottom .relative").append(`<div id="hmpp-button" class="ugly-button translate">HMPP</div>`)

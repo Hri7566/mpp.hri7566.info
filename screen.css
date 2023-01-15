@@ -98,9 +98,10 @@ table { border: 0; padding: 0; margin: 0; }
 #room .info { white-space: nowrap; line-height: 12px; overflow: hidden; height: 20px; }
 
 #room .info.lobby { color: #eeffbb; }
-#room .info.not-visible { color: #ddeeff; }
+#room .info.not-visible { /* color: #ddeeff; */ color: #8cf }
 #room .info.crownsolo:after { content: url('crownsolo.png'); position: relative; top: 2px; margin-left: 4px; }
 #room .info.no-chat:after { content: url('no-chat.png'); position: relative; top: 2px; margin-left: 4px; }
+#room .info.banned { color: #f88 }
 
 #room .expand { width: 24px; height: 100%; position: absolute; right: 0; top: 0; /* background: #aba url('arrow.png') no-repeat center 0%; */ background: #444 url('arrow.png') no-repeat center 0%; }
 #room .more { display: none; position: absolute; bottom: 100%; left: -1px; width: 100%; overflow: hidden; overflow-y: scroll; /* background: #898; */ background: #222;
@@ -110,9 +111,9 @@ table { border: 0; padding: 0; margin: 0; }
 #room .more .new { /* background: #9a9; */ background: #444; }
 #room .more .new:hover { background: #cdc; }
 
-.ugly-button { height: 12px; font-size: 12px; /* background: rgba(170, 187, 170, 0.35); */ background: rgba(34, 34, 34, 0.35); /* border: 1px solid #898; */ border: 1px solid #888; padding: 5px; cursor: pointer; line-height: 12px;
+.ugly-button { height: 12px; font-size: 12px; /* background: rgba(170, 187, 170, 0.35); */ background: rgba(34, 34, 34, 0.35); transition: background 0.3s; /* border: 1px solid #898; */ border: 1px solid #888; padding: 5px; cursor: pointer; line-height: 12px;
 	/* border-radius: 3px;  -webkit-border-radius: 3px; -moz-border-radius: 3px; */ width: 100px; overflow: hidden; white-space:nowrap; }
-.ugly-button:hover { background: rgba(187, 204, 170, 0.35) }
+.ugly-button:hover { background: rgba(187, 204, 170, 0.35); }
 .ugly-button.stuck { background: rgba(204, 187, 170, 0.35); }
 #new-room-btn { position: absolute; left: 300px; top: 4px; }
 #play-alone-btn { position: absolute; left: 420px; top: 4px; }
@@ -121,6 +122,7 @@ table { border: 0; padding: 0; margin: 0; }
 #midi-btn { position: absolute; left: 300px; top: 32px; }
 #record-btn { position: absolute; left: 420px; top: 32px; }
 #synth-btn { position: absolute; left: 540px; top: 32px; }
+#unban-btn { position: absolute; left: 540px; top: 32px; }
 
 #tooltip { position: absolute; pointer-events: none; background: #000; color: #fff; font-size: 10px; }
 .knob { cursor: pointer; }
@@ -164,7 +166,7 @@ table { border: 0; padding: 0; margin: 0; }
 
 .notification .pack {
     /* padding: 0px; */
-    padding: 5px;
+    padding: 3px;
     margin: 4px;
     /* background: #fdd; */
 	background: #00000000;
