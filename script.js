@@ -1642,11 +1642,10 @@ Rect.prototype.contains = function(x, y) {
 
 
 		window.AudioContext = window.AudioContext || window.webkitAudioContext || undefined;
-		// var audio_engine = AudioEngineWeb;
+		var audio_engine = AudioEngineWeb;
 		// var audio_engine = AudioEngineBlitz;
 
-		// this.audio = new AudioEngineBlitz().init(() => {// new audio_engine().init(/*function() {
-		this.audio = new AudioEngineWeb().init(function() {
+		this.audio = new audio_engine().init(/*function() {
 			for(var i in piano.keys) {
 				if(!piano.keys.hasOwnProperty(i)) continue;
 				(function() {
