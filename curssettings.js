@@ -224,23 +224,23 @@ EXT._initfunc.push(function () {
                 name: "Clear lines",
                 class: "csetting"
             }
-        },
-        theme: {
-            title: "Theme",
-            enabled: {
-                func: cmd => {
-                    if (!cmd.srcElement.classList.contains("enabled")) {
-                        cmd.srcElement.classList.add("enabled");
-                        enableTheme();
-                    } else {
-                        cmd.srcElement.classList.remove("enabled");
-                        disableTheme();
-                    }
-                },
-                name: "New theme",
-                class: ["connection", "csettgl"]
-            }
         }
+        // theme: {
+        //     title: "Theme",
+        //     enabled: {
+        //         func: cmd => {
+        //             if (!cmd.srcElement.classList.contains("enabled")) {
+        //                 cmd.srcElement.classList.add("enabled");
+        //                 enableTheme();
+        //             } else {
+        //                 cmd.srcElement.classList.remove("enabled");
+        //                 disableTheme();
+        //             }
+        //         },
+        //         name: "New theme",
+        //         class: ["connection", "csettgl"]
+        //     }
+        // }
     };
     var buttonJSON = addon.createList(
         settings,
@@ -257,24 +257,23 @@ EXT._initfunc.push(function () {
 
     (() => {
         // load localStorage
-        localStorage.gemptItem("new_theme") == true
-            ? (MPP.addons.theme.enabled = true)
-            : (MPP.addons.theme.enabled = false);
-
-        if (MPP.addons.theme.enabled) {
-            enableTheme();
-        }
+        // localStorage.gemptItem("new_theme") == true
+        //     ? (MPP.addons.theme.enabled = true)
+        //     : (MPP.addons.theme.enabled = false);
+        // if (MPP.addons.theme.enabled) {
+        //     enableTheme();
+        // }
     })();
 
-    const enableTheme = () => {
-        MPP.addons.theme.enabled = true;
-        localStorage.setItem("new_theme", true);
-        $.getScript("/looks.js");
-    };
+    // const enableTheme = () => {
+    //     MPP.addons.theme.enabled = true;
+    //     localStorage.setItem("new_theme", true);
+    //     $.getScript("/looks.js");
+    // };
 
-    const disableTheme = () => {
-        MPP.addons.theme.enabled = false;
-        localStorage.setItem("new_theme", false);
-        window.location.reload();
-    };
+    // const disableTheme = () => {
+    //     MPP.addons.theme.enabled = false;
+    //     localStorage.setItem("new_theme", false);
+    //     window.location.reload();
+    // };
 });
