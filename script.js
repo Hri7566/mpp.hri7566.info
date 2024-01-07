@@ -1324,6 +1324,8 @@ Rect.prototype.contains = function(x, y) {
 
 	CanvasRenderer.prototype.visualize = function(key, color) {
 		key.timePlayed = Date.now();
+		// let c = new Color(color);
+		// let c2 = c.toHexa() + "80";
 		key.blips.push({"time": key.timePlayed, "color": color});
 	};
 
@@ -1335,6 +1337,7 @@ Rect.prototype.contains = function(x, y) {
 
 		this.ctx.save();
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
 		// draw all keys
 		for(var j = 0; j < 2; j++) {
 			this.ctx.globalAlpha = 1.0;
@@ -1385,9 +1388,22 @@ Rect.prototype.contains = function(x, y) {
 					for(var b = 0; b < key.blips.length; b++) {
 						var blip = key.blips[b];
 						if(blip.time > timeBlipEnd) {
+							let strokeColor = new Color(blip.color);
+							// strokeColor.add(-0x40, -0x40, -0x40);
+							strokeColor.add(0x40, 0x40, 0x40);
 							this.ctx.fillStyle = blip.color;
+							this.ctx.strokeStyle = strokeColor.toHexa() + "90";
+							this.ctx.lineWidth = 8;
 							this.ctx.globalAlpha = alpha - ((now - blip.time) / 1000);
-							this.ctx.fillRect(x, y, w, h);
+							this.ctx.filter = "blur(5px)";
+							this.ctx.beginPath();
+							this.ctx.roundRect(x, y, w + 4, h + 4, 2);
+							this.ctx.stroke();
+							this.ctx.filter = "none";
+							this.ctx.beginPath();
+							this.ctx.roundRect(x, y, w, h, 2);
+							this.ctx.fill();
+							// this.ctx.fillRect(x, y, w, h);
 						} else {
 							key.blips.splice(b, 1);
 							--b;
