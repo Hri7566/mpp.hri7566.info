@@ -3,7 +3,8 @@ EXT._initfunc.push(function () {
     var addon = (EXT.button = { __proto__: null });
     var injectedStyles = [
         // '.notification .csetting { padding: 4px; margin: 4px; background: #ddf; border: 1px solid #f84; }',
-        ".notification .csetting { padding: 4px; margin: 4px; /* background: #ddf; */ /* border: 1px solid #f84; */ border: 1px solid #888; }",
+        // ".notification .csetting { padding: 4px; margin: 4px; /* background: #ddf; */ /* border: 1px solid #f84; */ border: 1px solid #888; }",
+        ".notification .csetting { border: 1px solid #ffffff10; border-radius: 5px; background-color: #ffffff10; transition: 300ms;}",
         '.notification .csetting:after { content: "USE"; font-size: 10px; line-height: 16px; color: #44a; float: right; }',
         ".notification .connection.csettgl { padding: 4px; margin: 4px; }",
         ".notification .connection.csettgl:after { line-height: 16px; }"

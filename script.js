@@ -1831,6 +1831,8 @@ Rect.prototype.contains = function(x, y) {
 
 	// Handle changes to participants
 	(function() {
+		window.partAlpha = "40";
+
 		gClient.on("participant added", function(part) {
 
 			part.displayX = 150;
@@ -1841,7 +1843,7 @@ Rect.prototype.contains = function(x, y) {
 			div.className = "name";
 			div.participantId = part.id;
 			div.textContent = part.name || "";
-			div.style.backgroundColor = part.color || "#777";
+			div.style.backgroundColor = part.color + partAlpha || "#777";
 			if(gClient.participantId === part.id) {
 				$(div).addClass("me");
 			}
@@ -1882,7 +1884,8 @@ Rect.prototype.contains = function(x, y) {
 
 				var div = document.createElement("div");
 				div.className = "name";
-				div.style.backgroundColor = part.color || "#777"
+				div.style.backgroundColor = part.color + partAlpha || "#77777710"
+				console.log("bruuuuh")
 				div.textContent = part.name || "";
 				part.cursorDiv.appendChild(div);
 
@@ -1904,7 +1907,7 @@ Rect.prototype.contains = function(x, y) {
 		});
 		gClient.on("participant update", function(part) {
 			var name = part.name || "";
-			var color = part.color || "#777";
+			var color = part.color + partAlpha || "#777";
 			part.nameDiv.style.backgroundColor = color;
 			part.nameDiv.textContent = name;
 			$(part.cursorDiv)
