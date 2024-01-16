@@ -537,7 +537,7 @@ table {
   left: 540px;
   top: 32px;
 }
-#unban-btn {
+#glownotes-btn {
   position: absolute;
   left: 540px;
   top: 32px;
@@ -1090,4 +1090,9 @@ input[type="checkbox"]:active {
   100% {
     -ms-transform: rotate(360deg);
   }
+}
+
+.rainbow-cursor {
+  background: url("rainbow_cursor.svg");
+  background-size: 26px 30px;
 }

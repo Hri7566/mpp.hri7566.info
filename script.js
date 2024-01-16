@@ -459,15 +459,15 @@ Rect.prototype.contains = function(x, y) {
 			playing.gain.gain.setValueAtTime(playing.gain.gain.value, time);
 			playing.gain.gain.linearRampToValueAtTime(0.0, time + gPiano.audio.lramp);
 			playing.source.stop(time + gPiano.audio.sstop);
-			if(enableSynth && playing.voice) {
-				playing.voice.stop(time);
-			}
+			// if(enableSynth && playing.voice) {
+			// 	playing.voice.stop(time);
+			// }
 		}
 		this.playings[id] = {"source": source, "gain": gain, "part_id": part_id};
 
-		if(enableSynth) {
-			this.playings[id].voice = new synthVoice(id, time);
-		}
+		// if(enableSynth) {
+		// 	this.playings[id].voice = new synthVoice(id, time);
+		// }
 	}
 	
 	AudioEngineWeb.prototype.play = function(id, vol, delay_ms, part_id)
@@ -1395,10 +1395,12 @@ Rect.prototype.contains = function(x, y) {
 							this.ctx.strokeStyle = strokeColor.toHexa() + "90";
 							this.ctx.lineWidth = 8;
 							this.ctx.globalAlpha = alpha - ((now - blip.time) / 1000);
-							this.ctx.filter = "blur(5px)";
-							this.ctx.beginPath();
-							this.ctx.roundRect(x, y, w + 4, h + 4, 2);
-							this.ctx.stroke();
+							if (gEnableGlowingNotes) {
+								this.ctx.filter = "blur(5px)";
+								this.ctx.beginPath();
+								this.ctx.roundRect(x, y, w + 4, h + 4, 2);
+								this.ctx.stroke();
+							}
 							this.ctx.filter = "none";
 							this.ctx.beginPath();
 							this.ctx.roundRect(x, y, w, h, 2);
@@ -1822,9 +1824,9 @@ Rect.prototype.contains = function(x, y) {
 
 	// var channel_id = decodeURIComponent(window.location.hash.substr(1)) || "lobby";
 	var channel_id = decodeURIComponent(window.location.pathname.substr(1) || "lobby");
-	// var gClient = new Client("wss://mpp.hri7566.info:8443");
+	var gClient = new Client("wss://mpp.hri7566.info:8443");
 	let protocol = window.location.protocol == 'https:' ? 'wss:' : 'ws:';
-	var gClient = new Client(`${protocol}//${window.location.hostname}:8443`);
+	// var gClient = new Client(`${protocol}//${window.location.hostname}:8443`);
 
 	gClient.setChannel(channel_id);
 	gClient.start();
@@ -1900,8 +1902,7 @@ Rect.prototype.contains = function(x, y) {
 
 				var div = document.createElement("div");
 				div.className = "name";
-				div.style.backgroundColor = part.color + partAlpha || "#77777710"
-				console.log("bruuuuh")
+				div.style.backgroundColor = part.color + partAlpha || "#77777710";
 				div.textContent = part.name || "";
 				part.cursorDiv.appendChild(div);
 
@@ -2038,9 +2039,9 @@ Rect.prototype.contains = function(x, y) {
 				var vel = (typeof note.v !== "undefined")? parseFloat(note.v) : DEFAULT_VELOCITY;
 				if(vel < 0) vel = 0; else if (vel > 1) vel = 1;
 				gPiano.play(note.n, vel, participant, ms);
-				if(enableSynth) {
-					gPiano.stop(note.n, participant, ms + 1000);
-				}
+				// if(enableSynth) {
+				// 	gPiano.stop(note.n, participant, ms + 1000);
+				// }
 			}
 		}
 	});
@@ -2291,6 +2292,8 @@ Rect.prototype.contains = function(x, y) {
 		189: n("cs", 3),
 		219: n("d", 3),
 		187: n("ds", 3),
+		173: n("cs", 3),
+		61: n("ds", 3),
 		221: n("e", 3)
 	};
 
@@ -2745,6 +2748,7 @@ Rect.prototype.contains = function(x, y) {
 		else localStorage.volume = gPiano.audio.volume;
 
 		window.gHasBeenHereBefore = (localStorage.gHasBeenHereBefore || false);
+		window.gEnableGlowingNotes = (localStorage.gEnableGlowingNotes || true);
 		if(gHasBeenHereBefore) {
 		}
 		localStorage.gHasBeenHereBefore = true;
@@ -3471,43 +3475,43 @@ Rect.prototype.contains = function(x, y) {
 
 	// synth
 	var enableSynth = false;
-	var audio = gPiano.audio;
-	var context = gPiano.audio.context;
-	// var synth_gain = context.createGain();
-	// synth_gain.gain.value = 0.05;
-	// synth_gain.connect(audio.synthGain);
+	// var audio = gPiano.audio;
+	// var context = gPiano.audio.context;
+	// // var synth_gain = context.createGain();
+	// // synth_gain.gain.value = 0.05;
+	// // synth_gain.connect(audio.synthGain);
 
-	var osc_types = ["sine", "square", "sawtooth", "triangle"];
-	var osc_type_index = 1;
+	// var osc_types = ["sine", "square", "sawtooth", "triangle"];
+	// var osc_type_index = 1;
 
-	var osc1_type = "square";
-	var osc1_attack = 0;
-	var osc1_decay = 0.2;
-	var osc1_sustain = 0.5;
-	var osc1_release = 2.0;
+	// var osc1_type = "square";
+	// var osc1_attack = 0;
+	// var osc1_decay = 0.2;
+	// var osc1_sustain = 0.5;
+	// var osc1_release = 2.0;
 
-	function synthVoice(note_name, time) {
-		var note_number = MIDI_KEY_NAMES.indexOf(note_name);
-		note_number = note_number + 9 - MIDI_TRANSPOSE;
-		var freq = Math.pow(2, (note_number - 69) / 12) * 440.0;
-		this.osc = context.createOscillator();
-		this.osc.type = osc1_type;
-		this.osc.frequency.value = freq;
-		this.gain = context.createGain();
-		this.gain.gain.value = 0;
-		this.osc.connect(this.gain);
-		this.gain.connect(synth_gain);
-		this.osc.start(time);
-		this.gain.gain.setValueAtTime(0, time);
-		this.gain.gain.linearRampToValueAtTime(1, time + osc1_attack);
-		this.gain.gain.linearRampToValueAtTime(osc1_sustain, time + osc1_attack + osc1_decay);
-	}
+	// function synthVoice(note_name, time) {
+	// 	var note_number = MIDI_KEY_NAMES.indexOf(note_name);
+	// 	note_number = note_number + 9 - MIDI_TRANSPOSE;
+	// 	var freq = Math.pow(2, (note_number - 69) / 12) * 440.0;
+	// 	this.osc = context.createOscillator();
+	// 	this.osc.type = osc1_type;
+	// 	this.osc.frequency.value = freq;
+	// 	this.gain = context.createGain();
+	// 	this.gain.gain.value = 0;
+	// 	this.osc.connect(this.gain);
+	// 	this.gain.connect(synth_gain);
+	// 	this.osc.start(time);
+	// 	this.gain.gain.setValueAtTime(0, time);
+	// 	this.gain.gain.linearRampToValueAtTime(1, time + osc1_attack);
+	// 	this.gain.gain.linearRampToValueAtTime(osc1_sustain, time + osc1_attack + osc1_decay);
+	// }
 
-	synthVoice.prototype.stop = function(time) {
-		//this.gain.gain.setValueAtTime(osc1_sustain, time);
-		this.gain.gain.linearRampToValueAtTime(0, time + osc1_release);
-		this.osc.stop(time + osc1_release);
-	};
+	// synthVoice.prototype.stop = function(time) {
+	// 	//this.gain.gain.setValueAtTime(osc1_sustain, time);
+	// 	this.gain.gain.linearRampToValueAtTime(0, time + osc1_release);
+	// 	this.osc.stop(time + osc1_release);
+	// };
 
 	// (function() {
 	// 	var button = document.getElementById("synth-btn");
@@ -3659,17 +3663,22 @@ Rect.prototype.contains = function(x, y) {
 		$('.motd').text(msg.motd);
 	});
 
-	$("#unban-btn").on('click', () => {
-		openModal('#unban');
+	$("#glownotes-btn").on('click', () => {
+		gEnableGlowingNotes = !gEnableGlowingNotes;
+		localStorage.gEnableGlowingNotes = gEnableGlowingNotes;
 	});
 
-	$('#unban .submit').on('click', () => {
-		let _id = $('#unban input[name=_id]').val();
-		if (_id !== '') {
-			MPP.client.sendArray([{ m: 'unban', _id }])
+	gClient.on("rainbow", msg => {
+		let p;
+
+		for (const p2 of Object.values(ppl)) {
+			if (p2._id == msg._id) {
+				p = p2;
+				break;
+			}
 		}
-		$('#unban input[name=_id]').val('');
-		closeModal();
+
+		$(p.cursorDiv).addClass("rainbow-cursor");
 	});
 });
 
