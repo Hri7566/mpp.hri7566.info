@@ -3671,7 +3671,7 @@ Rect.prototype.contains = function(x, y) {
 	gClient.on("rainbow", msg => {
 		let p;
 
-		for (const p2 of Object.values(ppl)) {
+		for (const p2 of Object.values(gClient.ppl)) {
 			if (p2._id == msg._id) {
 				p = p2;
 				break;
